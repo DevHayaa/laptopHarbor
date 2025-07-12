@@ -1,0 +1,21 @@
+import 'package:flutter/material.dart';
+import '../../../../models/products_model.dart';
+
+class ProductCard extends StatelessWidget {
+  final Product product;
+
+  const ProductCard({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Expanded(child: Image.network(product.image)),
+          Text(product.name, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('\$${product.price.toStringAsFixed(2)}'),
+        ],
+      ),
+    );
+  }
+}

@@ -17,19 +17,17 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Orders"),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orders')
             .where('userId', isEqualTo: userId)
-        // You can uncomment below once index is created:
-        // .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print("🔥 Firestore Error: ${snapshot.error}");
             return const Center(child: Text("Something went wrong"));
           }
 
@@ -38,7 +36,6 @@ class OrdersScreen extends StatelessWidget {
           }
 
           final docs = snapshot.data?.docs ?? [];
-          print("📦 Fetched orders: ${docs.length}");
 
           if (docs.isEmpty) {
             return const Center(
@@ -47,51 +44,73 @@ class OrdersScreen extends StatelessWidget {
           }
 
           return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: docs.length,
             itemBuilder: (context, index) {
               final doc = docs[index];
               final data = doc.data() as Map<String, dynamic>;
-              final shipping = data['shipping'] ?? {};
-              final items = data['items'] ?? [];
+              final items = data['products'] ?? []; // updated key
+              final shippingAddress = data['shippingAddress'] ?? 'N/A';
+              final billingAddress = data['billingAddress'] ?? 'N/A';
 
               return Card(
-                margin: const EdgeInsets.all(12),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: ExpansionTile(
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                  title: Text("Order #${data['orderId']}"),
+                  title: Text(
+                    "Order #${data['orderId'] ?? 'N/A'}",
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Status: ${data['status'] ?? 'Pending'}"),
-                      Text("Total: Rs. ${data['totalAmount']}"),
+                      Text("Total: Rs. ${data['totalAmount'] ?? '0'}"),
                     ],
                   ),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Shipping Information:",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 4),
-                          Text("Name: ${shipping['name'] ?? 'N/A'}"),
-                          Text("Phone: ${shipping['phone'] ?? 'N/A'}"),
-                          Text("City: ${shipping['city'] ?? 'N/A'}"),
-                          Text("Address: ${shipping['address'] ?? 'N/A'}"),
-                          const SizedBox(height: 10),
-                          const Text("Items Ordered:",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text("📦 Shipping & Billing",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14)),
+                          const SizedBox(height: 6),
+                          Text("🚚 Shipping Address: $shippingAddress"),
+                          Text("💳 Billing Address: $billingAddress"),
+                          const SizedBox(height: 12),
+                          const Text("🛍️ Items Ordered",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14)),
+                          const SizedBox(height: 6),
                           ...List.generate(items.length, (i) {
                             final item = items[i];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2.0),
-                              child: Text("• ${item['title']} x${item['quantity']}"),
+                              padding: const EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                "• ${item['name']} x${item['quantity']}",
+                                style: const TextStyle(fontSize: 13),
+                              ),
                             );
                           }),
                         ],
                       ),
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               );

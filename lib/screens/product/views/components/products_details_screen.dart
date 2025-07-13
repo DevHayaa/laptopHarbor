@@ -226,7 +226,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       icon: const Icon(Icons.rate_review_outlined),
                       label: const Text("Write a Review"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).primaryColorDark,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),

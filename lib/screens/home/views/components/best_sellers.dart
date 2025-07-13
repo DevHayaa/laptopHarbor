@@ -52,8 +52,6 @@ class BestSellersDynamic extends StatelessWidget {
                       brandName: product.brand ?? '',
                       title: product.name,
                       price: product.price,
-                      priceAfetDiscount: demoBestSellersProducts[index].priceAfetDiscount,
-                      dicountpercent: demoBestSellersProducts[index].dicountpercent,
                       press: () {
                         Navigator.pushNamed(
                           context,

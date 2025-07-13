@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:laptop_harbor/constants.dart';
 import 'package:laptop_harbor/route/screen_export.dart';
+import 'package:laptop_harbor/screens/whishlist/views/WishlistScreen.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -15,7 +16,7 @@ class _EntryPointState extends State<EntryPoint> {
   final List _pages = const [
     HomeScreen(),
     DiscoverScreen(),
-    BookmarkScreen(),
+    WishlistScreen(),
     // EmptyCartScreen(), // if Cart is empty
     CartScreen(),
     ProfileScreen(),
@@ -66,18 +67,7 @@ class _EntryPointState extends State<EntryPoint> {
                   BlendMode.srcIn),
             ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, notificationsScreenRoute);
-            },
-            icon: SvgPicture.asset(
-              "assets/icons/Notification.svg",
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                  Theme.of(context).textTheme.bodyLarge!.color!,
-                  BlendMode.srcIn),
-            ),
-          ),
+
         ],
       ),
       // body: _pages[_currentIndex],
@@ -127,10 +117,10 @@ class _EntryPointState extends State<EntryPoint> {
               label: "Discover",
             ),
             BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Bookmark.svg"),
+              icon: svgIcon("assets/icons/wishlist.svg"),
               activeIcon:
-                  svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
-              label: "Bookmark",
+                  svgIcon("assets/icons/wishlist.svg", color: primaryColor),
+              label: "Wishlist",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bag.svg"),

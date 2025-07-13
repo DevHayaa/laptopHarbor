@@ -52,7 +52,7 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: SvgPicture.asset("assets/icons/Bookmark.svg",
+                  icon: SvgPicture.asset("assets/icons/wishlist.svg",
                       color: Theme.of(context).textTheme.bodyLarge!.color),
                 ),
               ],

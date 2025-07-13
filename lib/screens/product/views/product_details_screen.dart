@@ -42,7 +42,7 @@ class ProductFullDetailScreen extends StatelessWidget {
             style: TextStyle(fontSize: 16),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
+            backgroundColor: Theme.of(context).primaryColorDark,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(

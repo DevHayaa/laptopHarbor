@@ -58,7 +58,6 @@ class AllProductsSlider extends StatelessWidget {
                       brandName: product.brand,
                       title: product.name,
                       price: product.price,
-                      priceAfetDiscount: product.price,
                       press: () {
                         Navigator.pushNamed(
                           context,

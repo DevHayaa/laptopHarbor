@@ -15,6 +15,8 @@ import 'package:laptop_harbor/screens/product/views/product_details_screen.dart'
 
 import '../add_products_screen.dart';
 import '../models/products_model.dart';
+import '../screens/auth/views/OTPVerificationScreen.dart';
+import '../screens/auth/views/ResetPasswordScreen.dart';
 import '../screens/cart/views/cart_screen.dart';
 import '../screens/checkout/views/checkout_screen.dart';
 import '../screens/product/views/components/products_details_screen.dart';
@@ -105,7 +107,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   );
     case passwordRecoveryScreenRoute:
       return MaterialPageRoute(
-        builder: (context) => const PasswordRecoveryScreen(),
+        builder: (context) => const ForgotPasswordScreen(),
       );
     // case verificationMethodScreenRoute:
     //   return MaterialPageRoute(
@@ -154,6 +156,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const AddReviewScreen(),
     //   );
+    case OTPVerificationScreen:
+      return MaterialPageRoute(
+        builder: (context) => const OTPVerificationScreen(),
+      );
+
+    case ResetPasswordScreen:
+      return MaterialPageRoute(
+        builder: (context) => const ResetPasswordScreen(),
+      );
+
     case homeScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const HomeScreen(),

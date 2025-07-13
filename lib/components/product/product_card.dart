@@ -8,15 +8,11 @@ class ProductCard extends StatelessWidget {
     required this.brandName,
     required this.title,
     required this.price,
-    this.priceAfetDiscount,
-    this.dicountpercent,
     required this.press,
   });
 
   final String image, brandName, title;
   final double price;
-  final double? priceAfetDiscount;
-  final int? dicountpercent;
   final VoidCallback press;
 
   @override
@@ -30,61 +26,32 @@ class ProductCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // 🔥 Fixed Image Section with height
+          // 🔥 Image Section
           SizedBox(
             height: 120,
             width: double.infinity,
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(defaultBorderRadious),
-                  child: image.isNotEmpty
-                      ? Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (context, error, stackTrace) =>
-                    const Center(child: Icon(Icons.broken_image)),
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                  )
-                      : const Center(
-                    child: Icon(Icons.image_not_supported),
-                  ),
-                ),
-                if (dicountpercent != null)
-                  Positioned(
-                    right: defaultPadding / 2,
-                    top: defaultPadding / 2,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding / 2,
-                      ),
-                      height: 16,
-                      decoration: const BoxDecoration(
-                        color: errorColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(defaultBorderRadious),
-                        ),
-                      ),
-                      child: Text(
-                        "$dicountpercent% off",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(defaultBorderRadious),
+              child: image.isNotEmpty
+                  ? Image.network(
+                image,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                errorBuilder: (context, error, stackTrace) =>
+                const Center(child: Icon(Icons.broken_image)),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator());
+                },
+              )
+                  : const Center(
+                child: Icon(Icons.image_not_supported),
+              ),
             ),
           ),
 
-          // 🧾 Product Info Section
+          // 🧾 Product Info
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -112,32 +79,7 @@ class ProductCard extends StatelessWidget {
                         .copyWith(fontSize: 12),
                   ),
                   const Spacer(),
-                  priceAfetDiscount != null
-                      ? Row(
-                    children: [
-                      Text(
-                        "\$$priceAfetDiscount",
-                        style: const TextStyle(
-                          color: Color(0xFF31B0D8),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(width: defaultPadding / 4),
-                      Text(
-                        "\$$price",
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .color,
-                          fontSize: 10,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ],
-                  )
-                      : Text(
+                  Text(
                     "\$$price",
                     style: const TextStyle(
                       color: Color(0xFF31B0D8),

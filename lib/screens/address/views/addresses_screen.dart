@@ -7,37 +7,56 @@ class AddressesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    if (userId == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            "You are not logged in",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Addresses')),
+      appBar: AppBar(
+        title: const Text('My Addresses'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black,
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
             .collection('orders')
+            .where('userId', isEqualTo: userId)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No addresses found.", style: TextStyle(fontSize: 16)),
-            );
+          if (snapshot.hasError) {
+            return const Center(child: Text("Something went wrong"));
           }
 
-          final orders = snapshot.data!.docs;
+          final orders = snapshot.data?.docs ?? [];
+
+          // ✅ Safely extract shipping addresses
           final addresses = orders
-              .map((doc) => doc['shippingAddress'])
-              .where((addr) => addr != null)
+              .map((doc) => doc['shippingAddress'] as String?)
+              .where((addr) => addr != null && addr.trim().isNotEmpty)
+              .map((e) => e!) // now safe to cast to non-null String
               .toSet()
               .toList();
 
           if (addresses.isEmpty) {
             return const Center(
-              child: Text("No addresses found.", style: TextStyle(fontSize: 16)),
+              child: Text(
+                "No addresses found.",
+                style: TextStyle(fontSize: 16),
+              ),
             );
           }
 
@@ -45,21 +64,29 @@ class AddressesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemCount: addresses.length,
             itemBuilder: (context, index) {
-              final address = addresses[index] as Map<String, dynamic>;
+              final address = addresses[index]; // ✅ safe now
 
               return Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 margin: const EdgeInsets.symmetric(vertical: 8),
-                elevation: 2,
                 child: ListTile(
-                  leading: const Icon(Icons.location_on_outlined),
-                  title: Text(address['name'] ?? 'No name'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(address['street'] ?? ''),
-                      Text('${address['city'] ?? ''} - ${address['zip'] ?? ''}'),
-                      Text('Phone: ${address['phone'] ?? ''}'),
-                    ],
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: Icon(Icons.location_on_outlined, color: Colors.white),
+                  ),
+                  title: const Text(
+                    "Shipping Address",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      address,
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                 ),
               );

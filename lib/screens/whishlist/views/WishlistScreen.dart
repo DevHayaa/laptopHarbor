@@ -16,7 +16,6 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Wishlist"),
-        centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -58,8 +57,7 @@ class WishlistScreen extends StatelessWidget {
                 brandName: item['brandName'],
                 title: item['title'],
                 price: item['price'],
-                priceAfetDiscount: item['priceAfetDiscount'],
-                dicountpercent: item['dicountpercent'],
+
                 press: () {
                   Navigator.pushNamed(
                     context,

@@ -70,6 +70,7 @@ const String changePasswordScreenRoute = '/change-password';
 const String notificationScreenRoute = '/notifications';
 const String faqScreenRoute = '/faq';
 const String productFullDetailScreenRoute = "/product-full-detail";
-
+ const String verifyOtp = '/verify-otp';
+ const String resetPassword = '/reset-password';
 
 

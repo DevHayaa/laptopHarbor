@@ -32,7 +32,7 @@ class BusinessScreen extends StatelessWidget {
             padding: const EdgeInsets.all(defaultPadding),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.7,
+              childAspectRatio: 0.85, // 👈 Adjusted to reduce height
               crossAxisSpacing: defaultPadding,
               mainAxisSpacing: defaultPadding,
             ),
@@ -43,8 +43,7 @@ class BusinessScreen extends StatelessWidget {
                 image: product.image,
                 brandName: product.name,
                 title: product.brand,
-                price: product.price,
-                priceAfetDiscount: product.price,
+                price: product.price, // ✅ Only actual price used
                 press: () {
                   Navigator.pushNamed(
                     context,

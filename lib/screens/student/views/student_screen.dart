@@ -45,7 +45,6 @@ class StudentScreen extends StatelessWidget {
                 brandName: product.name,
                 title: product.brand,
                 price: product.price,
-                priceAfetDiscount: product.price,
                 press: () {
                   Navigator.pushNamed(
                     context,

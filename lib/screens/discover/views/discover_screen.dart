@@ -38,14 +38,15 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     });
   }
 
-  Widget sectionTitle(String title) {
+  Widget sectionTitle(String emoji, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
       child: Text(
-        title,
+        "$emoji  $title",
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
+          color: Colors.black87,
         ),
       ),
     );
@@ -54,16 +55,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   Widget productCard(Product product) {
     return Container(
       width: 160,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -71,27 +72,33 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
             child: Image.network(
               product.image,
               height: 100,
               width: double.infinity,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+              const Center(child: Icon(Icons.broken_image)),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
             product.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             "Rs. ${product.price.toStringAsFixed(0)}",
             style: const TextStyle(
-              fontWeight: FontWeight.bold,
+              fontSize: 13,
               color: Colors.black87,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -101,31 +108,12 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   Widget horizontalProductList(List<Product> products) {
     return SizedBox(
-      height: 230,
+      height: 210,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 20, right: 12),
         itemCount: products.length,
         itemBuilder: (context, index) => productCard(products[index]),
-      ),
-    );
-  }
-
-  Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: "Search laptops...",
-          prefixIcon: const Icon(Icons.search),
-          filled: true,
-          fillColor: Colors.grey[100],
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14),
-            borderSide: BorderSide.none,
-          ),
-        ),
       ),
     );
   }
@@ -135,20 +123,19 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          searchBar(),
-          sectionTitle("🎮 Gaming Laptops"),
+          sectionTitle("🎮", "Gaming Laptops"),
           horizontalProductList(gaming),
 
-          sectionTitle("🎓 Student Laptops"),
+          sectionTitle("🎓", "Student Laptops"),
           horizontalProductList(student),
 
-          sectionTitle("💼 Business Laptops"),
+          sectionTitle("💼", "Business Laptops"),
           horizontalProductList(business),
 
-          sectionTitle("🔥 On Sale"),
+          sectionTitle("🔥", "On Sale"),
           horizontalProductList(onSale),
 
-          sectionTitle("💻 All Products"),
+          sectionTitle("💻", "All Products"),
           horizontalProductList(allProducts),
 
           const SizedBox(height: 30),
@@ -160,9 +147,15 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
-        title: const Text("Discover"),
+        title: const Text(
+          "Discover",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
